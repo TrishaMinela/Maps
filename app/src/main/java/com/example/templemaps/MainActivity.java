@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.admin.SystemUpdatePolicy;
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -14,6 +15,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,6 +91,25 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         temples.add(new Temple(new LatLng(30.5169, -97.7971), "Austin Texas Temple", "Announced: 3 April 2022\n", R.drawable.no_image));
 
+        //Initialization of Bottom Nav
+        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+        bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                if (item.getItemId() == R.id.navigation_spiral) {
+                    // spiral view
+                    return true;
+                } else if (item.getItemId() == R.id.navigation_map) {
+                    // map view
+                    return true;
+                } else if (item.getItemId() == R.id.navigation_list) {
+                    // list view
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        });
     }
 
     @Override
