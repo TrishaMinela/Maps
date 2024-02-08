@@ -10,7 +10,9 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
@@ -19,6 +21,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
     private GoogleMap googleMap;
     private List<Temple> temples = new ArrayList<>();
+    private List<Marker> markerList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,15 +93,32 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
-        googleMap=googleMap;
+        this.googleMap=googleMap;
 
         //Markers for each Temple in the List
         for (Temple temple : temples) {
-            googleMap.addMarker(temple.toMarkerOptions());
+            MarkerOptions markerOptions = temple.toMarkerOptions()
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker))
+                    .flat(true);
+            markerOptions.anchor(0.5f, 0.5f);
+            googleMap.addMarker(markerOptions);
         }
 
         //Camera Position
         LatLng location = temples.get(0).getLocation();
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 12));
+
+        //Listener for zoom changes
+        googleMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
+            @Override
+            public void onCameraMove() {
+                //marker size will be based on zoom level
+                float zoom = googleMap.getCameraPosition().zoom;
+                for (Marker marker: markerList) {
+                    marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.marker));
+                    marker.setAnchor(0.5f/zoom, 0.5f/zoom);
+                }
+            }
+        });
     }
 }

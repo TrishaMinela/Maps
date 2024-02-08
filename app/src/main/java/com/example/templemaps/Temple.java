@@ -19,7 +19,6 @@ public class Temple {
     }
 
     public LatLng getLocation(){
-
         return location;
     }
 
