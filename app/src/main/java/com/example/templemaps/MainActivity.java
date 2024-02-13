@@ -112,6 +112,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         });
     }
 
+
+    //Maps and Markers
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         this.googleMap=googleMap;
