@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Popup Box -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="150dp"
+    android:layout_marginStart="@dimen/pop"
+    android:layout_marginTop="600dp"
+    android:layout_marginEnd="@dimen/pop"
+    android:layout_marginBottom="@dimen/pop"
+    android:background="@drawable/popup"
+    android:orientation="horizontal">
+
+    <!-- Image View (1/3 of the space) -->
+    <ImageView
+        android:id="@+id/templeImageView"
+        android:layout_width="20dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:orientation="vertical">
+
+        <!-- Title TextView -->
+        <TextView
+            android:id="@+id/templeNameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margstart"
+            android:layout_marginTop="@dimen/popTop"
+            android:layout_marginEnd="@dimen/popTop"
+            android:textSize="@dimen/text" />
+
+        <!-- Description TextView -->
+        <TextView
+            android:id="@+id/templeDescriptionTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margstart"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="@dimen/popTop"
+            android:textSize="@dimen/text" />
+    </LinearLayout>
+</LinearLayout>

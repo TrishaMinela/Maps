@@ -3,9 +3,21 @@ package com.example.templemaps;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Dialog;
 import android.app.admin.SystemUpdatePolicy;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -16,6 +28,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -168,7 +181,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         temples.add(new Temple(new LatLng(4.708148311143708, -74.0554108284164), "Bogota Colombia Temple",
                 "Announcement: 7 April 1984\n" +
-                        "Groundbreaking: 26 June 1993\n" +         "Dedication: 24–26 April 1999\n", R.drawable.bogota_colombia_temple));
+                        "Groundbreaking: 26 June 1993\n" + "Dedication: 24–26 April 1999\n", R.drawable.bogota_colombia_temple));
 
         temples.add(new Temple(new LatLng(43.593848047829475, -116.27477132158418), "Boise Idaho Temple",
                 "Announcement: 31 March 1982\n" +
@@ -227,7 +240,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 "Announcement: 2 October 2022\n", R.drawable.no_image));*/
 
 
-
         //Initialization of Bottom Nav
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -253,7 +265,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     //Maps and Markers
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
-        this.googleMap=googleMap;
+        this.googleMap = googleMap;
 
         //Markers for each Temple in the List
         for (Temple temple : temples) {
@@ -261,7 +273,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker))
                     .flat(true);
             markerOptions.anchor(0.5f, 0.5f);
-            googleMap.addMarker(markerOptions);
+            Marker marker = googleMap.addMarker(markerOptions);
+            markerList.add(marker);
         }
 
         //Camera Position
@@ -274,11 +287,62 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             public void onCameraMove() {
                 //marker size will be based on zoom level
                 float zoom = googleMap.getCameraPosition().zoom;
-                for (Marker marker: markerList) {
+                for (Marker marker : markerList) {
                     marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.marker));
-                    marker.setAnchor(0.5f/zoom, 0.5f/zoom);
+                    marker.setAnchor(0.5f / zoom, 0.5f / zoom);
                 }
             }
         });
+
+        // click Listener for Markers
+        googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                // Find the corresponding temple for the clicked marker
+                Temple clickedTemple = null;
+                for (Temple temple : temples) {
+                    if (temple.getLocation().equals(marker.getPosition())) {
+                        clickedTemple = temple;
+                        break;
+                    }
+                }
+
+                // Display popup with temple's name and description
+                if (clickedTemple != null) {
+                    CreatePopUpWindow(clickedTemple,  findViewById(R.id.main_layout));
+
+                }
+
+                // Return true to consume the event
+                return true;
+            }
+        });
     }
+
+
+ //PopUp
+ private PopupWindow popupWindow;
+
+    private void CreatePopUpWindow(Temple temple, View anchorView) {
+        // Check if the popupWindow is already initialized
+        if (popupWindow == null) {
+            View popupView = LayoutInflater.from(this).inflate(R.layout.popup_layout, null);
+            // Create a TextView with temple information
+            TextView popupTextView = new TextView(this);
+            popupTextView.setText("Temple Name: " + temple.getName() + "\nDescription: " + temple.getDescription());
+            popupTextView.setPadding(16, 16, 16, 16);
+
+            // Create a PopupWindow
+            popupWindow = new PopupWindow(popupTextView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+
+            // Set a background drawable with some padding
+            popupTextView.setBackgroundColor(getResources().getColor(R.color.white));
+            popupWindow.setElevation(getResources().getDimension(R.dimen.custom_layout_elevation));
+            popupWindow.setOutsideTouchable(true);
+        }
+
+        // Show the popupWindow as a dropdown anchor to the anchorView (passing the map fragment's view)
+        popupWindow.showAtLocation(anchorView, Gravity.CENTER, 0, 0);
+    }
+
 }
