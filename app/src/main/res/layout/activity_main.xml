@@ -24,12 +24,5 @@
         android:background="?android:attr/windowBackground"
         app:menu="@xml/bottom_nav_menu" />
 
-    <!-- SnackBar -->
-    <FrameLayout
-        android:id="@+id/snackbar_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:orientation="vertical" />
 
 </RelativeLayout>

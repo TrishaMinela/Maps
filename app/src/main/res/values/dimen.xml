@@ -4,6 +4,6 @@
     <dimen name="custom_layout_elevation">100dp</dimen>
     <dimen name="pop">10dp</dimen>
     <dimen name="popTop">370dp</dimen>
-    <dimen name="margstart">20dp</dimen>
     <dimen name="text">16dp</dimen>
+    <dimen name="popup_spacing">16dp</dimen>
 </resources>

@@ -5,8 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
 import android.app.admin.SystemUpdatePolicy;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -14,6 +16,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -298,6 +302,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
+                // Close previous popup if open
+                if (popupWindow != null) {
+                    popupWindow.dismiss();
+                }
                 // Find the corresponding temple for the clicked marker
                 Temple clickedTemple = null;
                 for (Temple temple : temples) {
@@ -309,40 +317,85 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 // Display popup with temple's name and description
                 if (clickedTemple != null) {
-                    CreatePopUpWindow(clickedTemple,  findViewById(R.id.main_layout));
-
+                    //Box with Temple information
+                    showPopupWindow(clickedTemple);
                 }
 
                 // Return true to consume the event
                 return true;
             }
         });
+        // Click listener for the map to close the popup
+        googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                if (popupWindow != null) {
+                    popupWindow.dismiss();
+                }
+            }
+        });
     }
 
+    private PopupWindow popupWindow;
 
- //PopUp
- private PopupWindow popupWindow;
-
-    private void CreatePopUpWindow(Temple temple, View anchorView) {
-        // Check if the popupWindow is already initialized
-        if (popupWindow == null) {
-            View popupView = LayoutInflater.from(this).inflate(R.layout.popup_layout, null);
-            // Create a TextView with temple information
-            TextView popupTextView = new TextView(this);
-            popupTextView.setText("Temple Name: " + temple.getName() + "\nDescription: " + temple.getDescription());
-            popupTextView.setPadding(16, 16, 16, 16);
-
-            // Create a PopupWindow
-            popupWindow = new PopupWindow(popupTextView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
-
-            // Set a background drawable with some padding
-            popupTextView.setBackgroundColor(getResources().getColor(R.color.white));
-            popupWindow.setElevation(getResources().getDimension(R.dimen.custom_layout_elevation));
-            popupWindow.setOutsideTouchable(true);
+    private void showPopupWindow(Temple temple) {
+        if (popupWindow != null && popupWindow.isShowing()) {
+            // Popup window is already showing, update its content and position
+            updatePopupContent(temple);
+        } else {
+            // Popup window is not showing, create and show it
+            createAndShowPopup(temple);
         }
-
-        // Show the popupWindow as a dropdown anchor to the anchorView (passing the map fragment's view)
-        popupWindow.showAtLocation(anchorView, Gravity.CENTER, 0, 0);
     }
 
+    private void createAndShowPopup(Temple temple) {
+        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(R.layout.popup_layout, null);
+
+        // Set temple information in the popup layout
+        TextView templeName = popupView.findViewById(R.id.templeNameTextView);
+        TextView templeInfo = popupView.findViewById(R.id.templeDescriptionTextView);
+        ImageView templeImage = popupView.findViewById(R.id.templeImageView);
+        templeName.setText(temple.getName());
+        templeInfo.setText(temple.getDescription());
+        templeImage.setImageResource(temple.getIconResourceId());
+
+        // Create the popup window
+        int width = ViewGroup.LayoutParams.MATCH_PARENT;
+        int height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        popupWindow = new PopupWindow(popupView, width, height, true);
+
+        // Set the following properties to prevent dismissal when clicking outside the popup window
+        popupWindow.setOutsideTouchable(false);
+        popupWindow.setFocusable(false);
+
+        // Measure the view to calculate its height
+        popupView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+        int popupHeight = popupView.getMeasuredHeight();
+
+        // Get screen height
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int screenHeight = displayMetrics.heightPixels;
+
+        // Calculate the Y position for the popup window to appear above the center of the screen
+        int spacing = getResources().getDimensionPixelSize(R.dimen.popup_spacing);
+        int popupYPosition = (screenHeight - popupHeight - spacing); // Adjust this value as needed
+
+        // Show the popup window centered horizontally and above the center of the screen
+        popupWindow.showAtLocation(findViewById(android.R.id.content), Gravity.CENTER_HORIZONTAL | Gravity.TOP, 0, popupYPosition);
+
+        // Set a dismiss listener to nullify the popup window reference
+        popupWindow.setOnDismissListener(null);
+    }
+
+    private void updatePopupContent(Temple temple) {
+        // Update temple information in the existing popup layout
+        TextView templeName = popupWindow.getContentView().findViewById(R.id.templeNameTextView);
+        TextView templeInfo = popupWindow.getContentView().findViewById(R.id.templeDescriptionTextView);
+        ImageView templeImage = popupWindow.getContentView().findViewById(R.id.templeImageView);
+        templeName.setText(temple.getName());
+        templeInfo.setText(temple.getDescription());
+        templeImage.setImageResource(temple.getIconResourceId());
+    }
 }
