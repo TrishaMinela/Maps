@@ -2,11 +2,7 @@ package com.example.templemaps;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.app.Dialog;
-import android.app.admin.SystemUpdatePolicy;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -15,14 +11,9 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -32,8 +23,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.snackbar.Snackbar;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -246,23 +235,32 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         //Initialization of Bottom Nav
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+        bottomNav.setItemIconTintList(null);
+// Set the selected item listener
         bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                if (item.getItemId() == R.id.navigation_spiral) {
-                    // spiral view
+                int id = item.getItemId();
+                if (id == R.id.navigation_spiral) {
+                    Log.d("Navigation", "Spiral selected");
+                    // Start the SpiralActivity
+                    startActivity(new Intent(MainActivity.this, SpiralAct.class));
                     return true;
-                } else if (item.getItemId() == R.id.navigation_map) {
-                    // map view
+                } else if (id == R.id.navigation_map) {
+                    Log.d("Navigation", "Map selected");
+                    // Already in the map activity, do nothing or handle special cases
                     return true;
-                } else if (item.getItemId() == R.id.navigation_list) {
-                    // list view
+                } else if (id == R.id.navigation_list) {
+                    Log.d("Navigation", "List selected");
+                    // Start the ListActivity
+                    startActivity(new Intent(MainActivity.this, ListAct.class));
                     return true;
-                } else {
-                    return false;
                 }
+                return false;
             }
         });
+
+
     }
 
 
