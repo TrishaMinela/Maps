@@ -188,7 +188,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         ImageView templeImage = popupView.findViewById(R.id.templeImageView);
         templeName.setText(temple.getName());
         templeInfo.setText(temple.getDescription());
-        templeImage.setImageResource(temple.getIconResourceId());
+        String imageName = temple.getImageResourceId();
+        int resId = getResources().getIdentifier(imageName, "drawable", getPackageName());
+        templeImage.setImageResource(resId);
 
         // Create the popup window
         int width = ViewGroup.LayoutParams.MATCH_PARENT;
@@ -217,9 +219,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         // Update temple information in the existing popup layout
         TextView templeName = popupWindow.getContentView().findViewById(R.id.templeNameTextView);
         TextView templeInfo = popupWindow.getContentView().findViewById(R.id.templeDescriptionTextView);
-        ImageView templeImage = popupWindow.getContentView().findViewById(R.id.templeImageView);
+        ImageView templeImageView = popupWindow.getContentView().findViewById(R.id.templeImageView);
+
         templeName.setText(temple.getName());
         templeInfo.setText(temple.getDescription());
-        templeImage.setImageResource(temple.getIconResourceId());
+        String imageName = temple.getImageResourceId();
+        int resId = getResources().getIdentifier(imageName, "drawable", getPackageName());
+        templeImageView.setImageResource(resId);
     }
+
 }

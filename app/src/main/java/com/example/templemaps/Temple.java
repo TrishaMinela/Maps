@@ -19,6 +19,7 @@ public class Temple {
     private String name;
     private String description;
     private int iconResourceId;
+    private String imageResourceId;
 
     public Temple(double latitude, double longitude, String name, String description, int iconResourceId) {
         this.latitude = latitude;
@@ -86,4 +87,7 @@ public class Temple {
         }
     }
 
+    public String getImageResourceId() {
+        return imageResourceId;
+    }
 }
