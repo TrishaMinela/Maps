@@ -103,5 +103,124 @@
     "name": "Austin Texas Temple",
     "description": "Announced: 3 April 2022",
     "imageResourceId": "no_image"
+  },
+  {
+    "latitude": 5.1478,
+    "longitude": 7.3567,
+    "name": "Aba Nigeria Temple",
+    "description": "Announcement: 2 April 2000\nGroundbreaking: 23 February 2002\nDedication: 7 August 2005",
+    "imageResourceId": "aba_nigeria_temple"
+  },
+  {
+    "latitude": 10.698185265854661,
+    "longitude": 122.99053061022767,
+    "name": "Bacolod Philippines Temple",
+    "description": "Announcement: 5 October 2019\nGroundbreaking: 11 December 2021",
+    "imageResourceId": "bacolod_philippines_temple"
+  },
+  {
+    "latitude": -38.69058407842174,
+    "longitude": -62.2338538556748,
+    "name": "Bahia Blanca Argentina Temple",
+    "description": "Announcement: 5 April 2020\nGroundbreaking: 9 April 2022",
+    "imageResourceId": "bahia_blanca_argentina_temple"
+  },
+  {
+    "latitude": 35.3549833280961,
+    "longitude": -119.13774044326361,
+    "name": "Bakersfield California Temple",
+    "description": "Announcement: 2 April 2023",
+    "imageResourceId": "no_image"
+  },
+  {
+    "latitude": 13.749762600411321,
+    "longitude": 100.56312662191793,
+    "name": "Bangkok Thailand Temple",
+    "description": "Announcement: 5 April 2015\nGroundbreaking: 26 January 2019",
+    "imageResourceId": "bangkok_thailand_temple"
+  },
+  {
+    "latitude": 41.49045056053769,
+    "longitude": 2.0808519369518863,
+    "name": "Barcelona Spain Temple",
+    "description": "Announced: 3 April 2022",
+    "imageResourceId": "no_image"
+  },
+  {
+    "latitude": 11.017085400180319,
+    "longitude": -74.86159093631201,
+    "name": "Barranquilla Colombia Temple",
+    "description": "Announcement: 1 October 2011\nGroundbreaking: 20 February 2016\nDedication: 9 December 2018",
+    "imageResourceId": "barranquilla_colombia_temple"
+  },
+  {
+    "latitude": 30.362943248495572,
+    "longitude": -91.10773717037753,
+    "name": "Baton Rouge Louisiana Temple",
+    "description": "Announcement: 14 October 1998\nGroundbreaking: 8 May 1999\nDedication: 16 July 2000\nRededication: 17 November 2019",
+    "imageResourceId": "baton_rouge_louisiana_temple"
+  },
+  {
+    "latitude": -19.844339015620616,
+    "longitude": 34.862248817922136,
+    "name": "Beira Mozambique Temple",
+    "description": "Announcement: 4 April 2021",
+    "imageResourceId": "no_image"
+  },
+  {
+    "latitude": -1.3863675590049538,
+    "longitude": -48.45907762048797,
+    "name": "Belem Brazil Temple",
+    "description": "Announcement: 3 April 2016\nGroundbreaking: 17 August 2019\nDedication: 20 November 2022",
+    "imageResourceId": "belem_brazil_temple"
+  },
+  {
+    "latitude": -19.87999579756787,
+    "longitude": -43.977119362653205,
+    "name": "Belo Horizonte Brazil Temple",
+    "description": "Announcement: 4 April 2021",
+    "imageResourceId": "belo_horizonte_brazil_temple"
+  },
+  {
+    "latitude": 12.992872987157396,
+    "longitude": 77.70531129492537,
+    "name": "Bengaluru India Temple",
+    "description": "Announcement: 1 April 2018\nGroundbreaking: 2 December 2020",
+    "imageResourceId": "bengaluru_india_temple"
+  },
+  {
+    "latitude": 6.323228922940358,
+    "longitude": 5.632757337787359,
+    "name": "Benin City Nigeria Temple",
+    "description": "Announcement: 5 April 2020",
+    "imageResourceId": "no_image"
+  },
+  {
+    "latitude": 36.385177705134815,
+    "longitude": -94.18187541439885,
+    "name": "Bentonville Arkansas Temple",
+    "description": "Announcement: 5 October 2019\nGroundbreaking: 7 November 2020",
+    "imageResourceId": "bentonville_arkansas_temple"
+  },
+  {
+    "latitude": 47.002087939348925,
+    "longitude": 7.458710009219409,
+    "name": "Bern Switzerland Temple",
+    "description": "Announcement: 1 July 1952\nGroundbreaking: 5 August 1953\nDedication: 11–15 September 1955\nRededication: 23–25 October 1992",
+    "imageResourceId": "bern_switzerland_temple"
+  },
+  {
+    "latitude": 45.80071532556247,
+    "longitude": -108.6383691466424,
+    "name": "Billings Montana Temple",
+    "description": "Announcement: 30 August 1996\nGroundbreaking: 30 March 1998\nDedication: 20–21 November 1999",
+    "imageResourceId": "billings_montana_temple"
+  },
+  {
+    "latitude": 33.674690958298065,
+    "longitude": -86.82087432373186,
+    "name": "Birmingham Alabama Temple",
+    "description": "Announcement: 11 September 1998\nGroundbreaking: 9 October 1999\nDedication: 3 September 2000",
+    "imageResourceId": "birmingham_alabama_temple"
   }
 ]
