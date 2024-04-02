@@ -222,5 +222,118 @@
     "name": "Birmingham Alabama Temple",
     "description": "Announcement: 11 September 1998\nGroundbreaking: 9 October 1999\nDedication: 3 September 2000",
     "imageResourceId": "birmingham_alabama_temple"
+  },
+  {
+    "latitude": 51.1869,
+    "longitude": -1.7849,
+    "name": "Birmingham United Kingdom Temple",
+    "description": "Announced: 3 April 2022",
+    "imageResourceId": "no_image"
+  },
+  {
+    "latitude": 46.83906773055011,
+    "longitude": -100.81340594475473,
+    "name": "Bismarck North Dakota Temple",
+    "description": "Announcement: 29 July 1998\nGroundbreaking: 17 October 1998\nDedication: 19 September 1999",
+    "imageResourceId": "bismarck_north_dakota_temple"
+  },
+  {
+    "latitude": 4.708148311143708,
+    "longitude": -74.0554108284164,
+    "name": "Bogota Colombia Temple",
+    "description": "Announcement: 7 April 1984\nGroundbreaking: 26 June 1993\nDedication: 24–26 April 1999",
+    "imageResourceId": "bogota_colombia_temple"
+  },
+  {
+    "latitude": 43.593848047829475,
+    "longitude": -116.27477132158418,
+    "name": "Boise Idaho Temple",
+    "description": "Announcement: 31 March 1982\nGroundbreaking: 18 December 1982\nDedication: 25–30 May 1984\nRededication: 29 May 1987, 18 November 2012",
+    "imageResourceId": "boise_idaho_temple"
+  },
+  {
+    "latitude": 42.41230929550218,
+    "longitude": -71.18712912030117,
+    "name": "Boston Massachusetts Temple",
+    "description": "Announcement: 30 September 1995\nGroundbreaking: 13 June 1997\nDedication: 1 October 2000",
+    "imageResourceId": "boston_massachusetts_temple"
+  },
+  {
+    "latitude": 40.88315626676571,
+    "longitude": -111.84626619098371,
+    "name": "Bountiful Utah Temple",
+    "description": "Announcement: 2 February 1990\nGroundbreaking: 2 May 1992\nDedication: 8–14 January 1995",
+    "imageResourceId": "bountiful_utah_temple"
+  },
+  {
+    "latitude": -15.747313557115652,
+    "longitude": -47.88058059393178,
+    "name": "Brasilia Brazil Temple",
+    "description": "Announcement: 2 April 2017\nGroundBreaking: 26 September 2020",
+    "imageResourceId": "brasilia_brazil_temple"
+  },
+  {
+    "latitude": -4.321288799827434,
+    "longitude": 15.261529244298705,
+    "name": "Brazzaville Republic of the Congo Temple",
+    "description": "Announced: 3 April 2022",
+    "imageResourceId": "no_image"
+  },
+  {
+    "latitude": 41.505800439057964,
+    "longitude": -112.01608320815957,
+    "name": "Brigham City Utah Temple",
+    "description": "Announcement: 3 October 2009\nGroundbreaking: 31 July 2010\nDedication: 23 September 2012",
+    "imageResourceId": "brigham_city_utah_temple"
+  },
+  {
+    "latitude": -27.48069511113349,
+    "longitude": 153.03416020680515,
+    "name": "Brisbane Australia Temple",
+    "description": "Announcement: 20 July 1998\nGroundbreaking: 26 May 2001\nDedication: 15 June 2003",
+    "imageResourceId": "brisbane_australia_temple"
+  },
+  {
+    "latitude": 50.8013,
+    "longitude": 4.4254,
+    "name": "Brussels Belgium Temple",
+    "description": "Announcement: 4 April 2021",
+    "imageResourceId": "no_image"
+  },
+  {
+    "latitude": 47.57033771832978,
+    "longitude": 19.006803265059634,
+    "name": "Budapest Hungary Temple",
+    "description": "Announcement: 7 April 2019",
+    "imageResourceId": "budapest_hungary_temple"
+  },
+  {
+    "latitude": -34.72642570380932,
+    "longitude": -58.5022034706948,
+    "name": "Buenos Aires Argentina Temple",
+    "description": "Announcement: 2 April 1980\nGroundbreaking: 20 April 1983\nDedication: 17–19 January 1986\nRededication: 9 September 2012",
+    "imageResourceId": "buenos_aires_argentina_temple"
+  },
+  {
+    "latitude": -34.72882409172169,
+    "longitude": -58.517492062858196,
+    "name": "Buenos Aires City Center Argentina Temple",
+    "description": "Announcement: 2 October 2022",
+    "imageResourceId": "buenos_aires_city_center_argentina_temple"
+  },
+  {
+    "latitude": 42.5273076046985,
+    "longitude": -113.76360103881454,
+    "name": "Burley Idaho Temple",
+    "description": "Announcement: 4 April 2021\nGroundbreaking: 4 June 2022",
+    "imageResourceId": "burley_idaho_temple"
+  },
+  {
+    "latitude": 35.2059,
+    "longitude": 129.0756,
+    "name": "Busan Korea Temple",
+    "description": "Announcement: 2 October 2022",
+    "imageResourceId": "busan_korea_temple"
   }
+
 ]
