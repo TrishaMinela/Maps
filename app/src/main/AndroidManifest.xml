@@ -27,6 +27,15 @@
             </intent-filter>
         </activity>
 
+       <!-- SpiralActivity
+        <activity android:name=".SpiralActivity" />-->
+
+        <!-- MapActivity
+        <activity android:name=".MapActivity" />-->
+
+        <!-- ListActivity
+        <activity android:name=".ListActivity" />-->
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBBYlh_T4USEfF4IwTCcPQ_M3Ica8j56wA"/>

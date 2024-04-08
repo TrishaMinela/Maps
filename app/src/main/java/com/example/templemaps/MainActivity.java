@@ -3,10 +3,16 @@ package com.example.templemaps;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+<<<<<<< Updated upstream
 import android.app.Dialog;
 import android.app.admin.SystemUpdatePolicy;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+=======
+import android.app.ListActivity;
+import android.app.admin.SystemUpdatePolicy;
+import android.content.Intent;
+>>>>>>> Stashed changes
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -50,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.id_map);
         mapFragment.getMapAsync(this);
 
+<<<<<<< Updated upstream
         //Adding temples to the list
         temples.add(new Temple(new LatLng(5.1478, 7.3567), "Aba Nigeria Temple", "Announcement:  2 April 2000\n" +
                 "Groundbreaking:  23 February 2002\n" +
@@ -243,6 +250,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         /*temples.add(new Temple(new LatLng(unknownLat, unknownLng), "Busan Korea Temple",
                 "Announcement: 2 October 2022\n", R.drawable.no_image));*/
 
+=======
+>>>>>>> Stashed changes
 
         //Initialization of Bottom Nav
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
@@ -251,12 +260,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 if (item.getItemId() == R.id.navigation_spiral) {
                     // spiral view
+                    //startActivity(new Intent(MainActivity.this, SpiralActivity.class));
                     return true;
                 } else if (item.getItemId() == R.id.navigation_map) {
                     // map view
                     return true;
                 } else if (item.getItemId() == R.id.navigation_list) {
                     // list view
+                    //startActivity(new Intent(MainActivity.this, ListActivity.class));
                     return true;
                 } else {
                     return false;

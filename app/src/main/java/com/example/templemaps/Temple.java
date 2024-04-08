@@ -1,6 +1,5 @@
 package com.example.templemaps;
 
-import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -9,7 +8,11 @@ public class Temple {
     private LatLng location;
     private String name;
     private String description;
-    private  int iconResourceId;
+    private int iconResourceId;
+
+    public Temple() {
+        // Default constructor
+    }
 
     public Temple(LatLng location, String name, String description, int iconResourceId) {
         this.location = location;
@@ -18,24 +21,39 @@ public class Temple {
         this.iconResourceId = iconResourceId;
     }
 
-    public LatLng getLocation(){
+    public LatLng getLocation() {
         return location;
     }
 
-    public String getName(){
+    public void setLocation(LatLng location) {
+        this.location = location;
+    }
+
+    public String getName() {
         return name;
     }
 
-    public String getDescription(){
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
         return description;
     }
 
-    public int getIconResourceId(){
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
+    public int getIconResourceId() {
         return iconResourceId;
     }
 
-    public MarkerOptions toMarkerOptions(){
+    public void setIconResourceId(int iconResourceId) {
+        this.iconResourceId = iconResourceId;
+    }
+
+    public MarkerOptions toMarkerOptions() {
         MarkerOptions options = new MarkerOptions();
         options.position(location);
         options.title(name);
