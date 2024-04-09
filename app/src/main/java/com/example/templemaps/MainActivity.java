@@ -2,13 +2,6 @@ package com.example.templemaps;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import android.app.Dialog;
-import android.app.admin.SystemUpdatePolicy;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.app.ListActivity;
-import android.app.admin.SystemUpdatePolicy;
-import android.content.Intent;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -74,32 +67,20 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
-                if (item.getItemId() == R.id.navigation_spiral) {
-                    // spiral view
-                    //startActivity(new Intent(MainActivity.this, SpiralActivity.class));
-
                 int id = item.getItemId();
                 if (id == R.id.navigation_spiral) {
                     Log.d("Navigation", "Spiral selected");
                     // Start the SpiralActivity
                     startActivity(new Intent(MainActivity.this, SpiralAct.class));
-
                     return true;
                 } else if (id == R.id.navigation_map) {
                     Log.d("Navigation", "Map selected");
                     // Already in the map activity, do nothing or handle special cases
                     return true;
-
-                } else if (item.getItemId() == R.id.navigation_list) {
-                    // list view
-                    //startActivity(new Intent(MainActivity.this, ListActivity.class));
-
                 } else if (id == R.id.navigation_list) {
                     Log.d("Navigation", "List selected");
                     // Start the ListActivity
                     startActivity(new Intent(MainActivity.this, ListAct.class));
-
                     return true;
                 }
                 return false;
@@ -207,6 +188,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         ImageView templeImage = popupView.findViewById(R.id.templeImageView);
         templeName.setText(temple.getName());
         templeInfo.setText(temple.getDescription());
+        templeImage.setImageResource(temple.getIconResourceId());
         String imageName = temple.getImageResourceId();
         int resId = getResources().getIdentifier(imageName, "drawable", getPackageName());
         templeImage.setImageResource(resId);
@@ -238,10 +220,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         // Update temple information in the existing popup layout
         TextView templeName = popupWindow.getContentView().findViewById(R.id.templeNameTextView);
         TextView templeInfo = popupWindow.getContentView().findViewById(R.id.templeDescriptionTextView);
+        ImageView templeImage = popupWindow.getContentView().findViewById(R.id.templeImageView);
         ImageView templeImageView = popupWindow.getContentView().findViewById(R.id.templeImageView);
 
         templeName.setText(temple.getName());
         templeInfo.setText(temple.getDescription());
+        templeImage.setImageResource(temple.getIconResourceId());
         String imageName = temple.getImageResourceId();
         int resId = getResources().getIdentifier(imageName, "drawable", getPackageName());
         templeImageView.setImageResource(resId);
