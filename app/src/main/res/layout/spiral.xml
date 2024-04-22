@@ -134,12 +134,18 @@
         android:id="@+id/seekBar3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:progress="0"
         android:progressDrawable="@drawable/slider"
         android:thumb="@drawable/slider_button"
         android:visibility="visible"
-        android:maxHeight="35px"/>
+        android:maxHeight="35px"
+        android:background="@android:color/white"/>
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@android:color/white"/>
 
     <LinearLayout
         android:id="@+id/imageShow"
@@ -188,7 +194,8 @@
         android:layout_weight="1"
         android:layout_height="match_parent"
         android:src="@drawable/left_arrow_large"
-        android:layout_gravity="center_vertical"/>
+        android:layout_gravity="center_vertical"
+        android:background="@android:color/white"/>
 
     <ImageButton
         android:id="@+id/slider_right_button"
@@ -197,7 +204,18 @@
         android:layout_weight="1"
         android:layout_height="match_parent"
         android:src="@drawable/right_arrow_large"
-        android:layout_gravity="center_vertical"/>
+        android:layout_gravity="center_vertical"
+        android:background="@android:color/white"/>
+
+    <!-- BottomNavigationView -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/bottom_navigation_height"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        app:menu="@menu/bottom_nav_menu" />
+
 
 
 </LinearLayout>

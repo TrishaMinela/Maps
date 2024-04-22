@@ -40,6 +40,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -53,6 +54,8 @@ import static android.graphics.Color.RED;
 import static android.graphics.Color.YELLOW;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class SpiralAct extends AppCompatActivity {
 
@@ -131,6 +134,9 @@ public class SpiralAct extends AppCompatActivity {
         }
     }
 
+
+
+
     @SuppressLint("ClickableViewAccessibility")
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -138,6 +144,54 @@ public class SpiralAct extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         super.setContentView(R.layout.spiral);
         mContext = SpiralAct.this;
+
+
+        //Initialization of Bottom Nav
+        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+        bottomNav.setItemIconTintList(null);
+
+        // Define layout parameters
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+            );
+
+        // Add padding to the bottom
+            int bottomNavPadding = getResources().getDimensionPixelSize(R.dimen.bottom_nav_padding);
+            layoutParams.setMargins(0, 0, 0, bottomNavPadding);
+
+        // Set the modified layout parameters
+            bottomNav.setLayoutParams(layoutParams);
+
+        // Set the selected item listener
+        bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id = item.getItemId();
+                if (id == R.id.navigation_spiral) {
+                    Log.d("Navigation", "Spiral selected");
+                    // Already in the SpiralAct activity, do nothing or handle special cases
+                    return true;
+                } else if (id == R.id.navigation_map) {
+                    Log.d("Navigation", "Map selected");
+                    // Start the MainActivity (or whatever activity represents your map)
+                    startActivity(new Intent(SpiralAct.this, MainActivity.class));
+                    finish(); // Optional: Finish the current activity if you don't want to keep it in the back stack
+                    return true;
+                } else if (id == R.id.navigation_list) {
+                    Log.d("Navigation", "List selected");
+                    // Start the ListAct activity
+                    startActivity(new Intent(SpiralAct.this, ListAct.class));
+                    finish(); // Optional: Finish the current activity
+                    return true;
+                }
+                return false;
+            }
+        });
+
+// Set the default selected item
+        bottomNav.setSelectedItemId(R.id.navigation_spiral);
+
 
         tv = new TempleView(this);
         sliderMax = tv.howManyTemples * 30;
