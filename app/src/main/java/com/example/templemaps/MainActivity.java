@@ -33,7 +33,6 @@ import android.graphics.Color;
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
     private GoogleMap googleMap;
     private List<Temple> temples;
-
     private List<Marker> markerList = new ArrayList<>();
 
     @Override
@@ -63,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         //Initialization of Bottom Nav
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setItemIconTintList(null);
-// Set the selected item listener
+        // Set the selected item listener
         bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
