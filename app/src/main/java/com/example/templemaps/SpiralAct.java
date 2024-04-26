@@ -40,7 +40,6 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -54,18 +53,24 @@ import static android.graphics.Color.RED;
 import static android.graphics.Color.YELLOW;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
-
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.MenuItem;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import java.util.List;
 
 public class SpiralAct extends AppCompatActivity {
-
+    private List<Temple> temples;
     private TempleView tv;
     public SeekBar slider;
     public Context mContext;
+    private MyTimer timA;
     public int progress;
     public int lastProgress;
     private int stop;
-    private MyTimer timA;
     private boolean sliderTouchedByHuman;
     private LinearLayout lnl;
     private LinearLayout lnlH;
@@ -81,6 +86,9 @@ public class SpiralAct extends AppCompatActivity {
     private int height;
     private AlertDialog searchDialog;
     private int sliderMax;
+    private boolean justStartSlider;
+    private float startPoint;
+    private float stopPoint;
 
     public class MyTimer extends Handler {
 
@@ -90,6 +98,7 @@ public class SpiralAct extends AppCompatActivity {
 
         @Override
         public void handleMessage(Message m) {
+            //Log.d("My Timer here ", "My Timer ****************" + " ");
 
             if (tv.touchDownOnScreenTempleView == TRUE) {
                 progress = lastProgress;
@@ -130,12 +139,13 @@ public class SpiralAct extends AppCompatActivity {
                 stop ++;
             }
 
+            //very helper log here, display current slider progress and it's target progress
+            //Log.d("progress is ", progress + " ");
+            //Log.d("last progress is ", lastProgress + " ");
+
             sendMessageDelayed(obtainMessage(0), 1);
         }
     }
-
-
-
 
     @SuppressLint("ClickableViewAccessibility")
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -146,56 +156,13 @@ public class SpiralAct extends AppCompatActivity {
         mContext = SpiralAct.this;
 
 
-        //Initialization of Bottom Nav
-        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
-        bottomNav.setItemIconTintList(null);
-
-        // Define layout parameters
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
-            );
-
-        // Add padding to the bottom
-            int bottomNavPadding = getResources().getDimensionPixelSize(R.dimen.bottom_nav_padding);
-            layoutParams.setMargins(0, 0, 0, bottomNavPadding);
-
-        // Set the modified layout parameters
-            bottomNav.setLayoutParams(layoutParams);
-
-        // Set the selected item listener
-        bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int id = item.getItemId();
-                if (id == R.id.navigation_spiral) {
-                    Log.d("Navigation", "Spiral selected");
-                    // Already in the SpiralAct activity, do nothing or handle special cases
-                    return true;
-                } else if (id == R.id.navigation_map) {
-                    Log.d("Navigation", "Map selected");
-                    // Start the MainActivity (or whatever activity represents your map)
-                    startActivity(new Intent(SpiralAct.this, MainActivity.class));
-                    finish(); // Optional: Finish the current activity if you don't want to keep it in the back stack
-                    return true;
-                } else if (id == R.id.navigation_list) {
-                    Log.d("Navigation", "List selected");
-                    // Start the ListAct activity
-                    startActivity(new Intent(SpiralAct.this, ListAct.class));
-                    finish(); // Optional: Finish the current activity
-                    return true;
-                }
-                return false;
-            }
-        });
-
-// Set the default selected item
-        bottomNav.setSelectedItemId(R.id.navigation_spiral);
-
 
         tv = new TempleView(this);
         sliderMax = tv.howManyTemples * 30;
 
+        //Toast.makeText(mContext, sliderMax + "", Toast.LENGTH_SHORT).show();
+
+        //(245, 300, 325, 340, 380, 420, 450, 490, 520, 540, 570, 610, 680, 715, 750, 780, 810, 850, 890, 1070, 1290, 1430, 1520, 1540, 1575, 1630, 1660, 1700, 1710, 1755, 1850, 1890, 2315, 3330, 3540, 3720, 3800, 3850, 3950, 4030, 4110, 4200, 4300, 4400, 4520, 4540, 4650, 4785, 4935, 5100, 5110, 5320, 5330, 5800, 6990)
         List<Integer> temporaryHolder = Arrays.asList(245, 300, 325, 340, 380, 420, 450, 490, 520, 540, 570, 610, 680, 715, 750, 780, 810, 850, 890, 1070, 1290, 1430, 1520, 1540, 1575, 1630, 1660, 1700, 1710, 1755, 1850, 1890, 2315, 3330, 3540, 3720, 3800, 3850, 3950, 4030, 4110, 4200, 4300, 4400, 4520, 4540, 4650, 4785, 4935, 5100, 5110, 5320, 5330, 6000, 7160);
         for (int i : temporaryHolder) {
             templeYearsThetaFriends.add(i);
@@ -211,6 +178,8 @@ public class SpiralAct extends AppCompatActivity {
         manager.getDefaultDisplay().getMetrics(outMetrics);
         width = outMetrics.widthPixels;
         height = outMetrics.heightPixels;
+        //Log.d("window Width", width + " ");
+        //Log.d("window Height", height + " ");
 
         LinearLayout.LayoutParams nice = new LinearLayout.LayoutParams
                 (LinearLayout.LayoutParams.MATCH_PARENT,
@@ -221,8 +190,9 @@ public class SpiralAct extends AppCompatActivity {
         tv.setLayoutParams(nice);
 
         slider = findViewById(R.id.seekBar3);
-
-        slider.setBackgroundColor(Color.parseColor("#287a78"));
+        //slider.setBackgroundColor(Color.parseColor("#669cff"));
+        //slider.setBackgroundColor(Color.parseColor("#202224"));
+        slider.setBackgroundColor(Color.parseColor("#ffffff"));
 
 
 
@@ -230,6 +200,9 @@ public class SpiralAct extends AppCompatActivity {
         slider.setMax(sliderMax);
 
         slider.setProgress(5550);
+        //slider.setBackgroundColor(Color.parseColor("#292d30"));
+
+        //android:progressDrawable="@drawable/slider"
 
         timA = new MyTimer();
 
@@ -264,13 +237,14 @@ public class SpiralAct extends AppCompatActivity {
 
             }
 
+
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
                 tv.sliderStart(TRUE);
                 tv.invalidate();
                 sliderTouchedByHuman = TRUE;
                 slider.setProgress(lastProgress);
-                boolean justStartSlider = TRUE;
+                justStartSlider = TRUE;
 
                 //Toast.makeText(mContext, "touch SeekBar", Toast.LENGTH_SHORT).show();
             }
@@ -281,22 +255,26 @@ public class SpiralAct extends AppCompatActivity {
                 tv.invalidate();
 
                 sliderTouchedByHuman = FALSE;
-                float stopPoint = slider.getProgress();
+                stopPoint = slider.getProgress();
+
+                //Toast.makeText(mContext, "stop point is " + stopPoint, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(mContext, "release SeekBar", Toast.LENGTH_SHORT).show();
 
             }
         });
 
         final ImageButton leftButton = findViewById(R.id.slider_left_button);
-        leftButton.setBackgroundColor(Color.parseColor("#007a66"));
+        leftButton.setBackgroundColor(Color.parseColor("#000000"));
+        // arrow color is the same as spiral background #17252a
 
 
         leftButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if(event.getAction() == MotionEvent.ACTION_DOWN){
-                    leftButton.setBackgroundColor(Color.parseColor("#507a66"));
+                    leftButton.setBackgroundColor(Color.parseColor("#000000"));
                 }else if(event.getAction() == MotionEvent.ACTION_UP){
-                    leftButton.setBackgroundColor(Color.parseColor("#007a66"));
+                    leftButton.setBackgroundColor(Color.parseColor("#000000"));
                     if (slider.getProgress() - 30 < 30) {
                         progress = 30;
                     } else {
@@ -312,15 +290,15 @@ public class SpiralAct extends AppCompatActivity {
         });
 
         final ImageButton rightButton = findViewById(R.id.slider_right_button);
-        rightButton.setBackgroundColor(Color.parseColor("#007a66"));
+        rightButton.setBackgroundColor(Color.parseColor("#000000"));
 
         rightButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if(event.getAction() == MotionEvent.ACTION_DOWN){
-                    rightButton.setBackgroundColor(Color.parseColor("#507a66"));
+                    rightButton.setBackgroundColor(Color.parseColor("#000000"));
                 }else if(event.getAction() == MotionEvent.ACTION_UP){
-                    rightButton.setBackgroundColor(Color.parseColor("#007a66"));
+                    rightButton.setBackgroundColor(Color.parseColor("#000000"));
                     if (slider.getProgress() + 30 > sliderMax) {
                         progress = sliderMax;
                     } else {
@@ -346,7 +324,7 @@ public class SpiralAct extends AppCompatActivity {
         rightButton.setLayoutParams(two);
         lnlH = new LinearLayout(this);
         lnlH.setOrientation(LinearLayout.HORIZONTAL);
-        lnlH.setBackgroundColor(Color.parseColor("#287a78"));
+        lnlH.setBackgroundColor(Color.parseColor("#ffffff"));
 
         ((ViewGroup)leftButton.getParent()).removeView(leftButton);
         lnlH.addView(leftButton);
@@ -355,7 +333,7 @@ public class SpiralAct extends AppCompatActivity {
         lnlSlider.setOrientation(LinearLayout.VERTICAL);
 
         LinearLayout sliderLabelNoText = findViewById(R.id.sliderLabelNoText);
-        sliderLabelNoText.setBackgroundColor(Color.parseColor("#287a78"));
+        sliderLabelNoText.setBackgroundColor(Color.parseColor("#ffffff"));
 
         ((ViewGroup)sliderLabelNoText.getParent()).removeView(sliderLabelNoText);
         lnlSlider.addView(sliderLabelNoText);
@@ -364,7 +342,7 @@ public class SpiralAct extends AppCompatActivity {
         lnlSlider.addView(slider);
 
         LinearLayout sliderLabelNoTextTwo = findViewById(R.id.sliderLabelNoTextTwo);
-        sliderLabelNoTextTwo.setBackgroundColor(Color.parseColor("#287a78"));
+        sliderLabelNoTextTwo.setBackgroundColor(Color.parseColor("#ffffff"));
 
         ((ViewGroup)sliderLabelNoTextTwo.getParent()).removeView(sliderLabelNoTextTwo);
         lnlSlider.addView(sliderLabelNoTextTwo);
@@ -390,7 +368,13 @@ public class SpiralAct extends AppCompatActivity {
             sliderHeight = (int)(height * 0.06);
         }
 
+
         lnlH.setMinimumHeight(sliderHeight);
+
+
+        // any setting button size is not working, because it's match parent linear layout already.
+        //leftButton.setWidth((int)(width*0.2));
+        //leftButton.setWidth(lnlH.getHeight());
 
         lnl = new LinearLayout(this);
         lnl.setOrientation(LinearLayout.VERTICAL);
@@ -399,7 +383,38 @@ public class SpiralAct extends AppCompatActivity {
         lnl.addView(lnlH);
         setContentView(lnl);
 
+
+
+        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+        bottomNav.setItemIconTintList(null);
+        // Set the selected item listener
+        bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id = item.getItemId();
+                if (id == R.id.navigation_spiral) {
+                    Log.d("Navigation", "Spiral selected");
+                    //Already in the list activity, do nothing or handle special cases
+                    return true;
+                } else if (id == R.id.navigation_map) {
+                    Log.d("Navigation", "Map selected");
+                    //Start the Map Activity
+                    startActivity(new Intent(SpiralAct.this, MainActivity.class));
+                    return true;
+                } else if (id == R.id.navigation_list) {
+                    Log.d("Navigation", "List selected");
+                    //Start the List Activity
+                    startActivity(new Intent(SpiralAct.this, ListAct.class));
+                    return true;
+                }
+                return false;
+            }
+        });
+        bottomNav.setSelectedItemId(R.id.navigation_list);
+
+
     }
+
 
     @Override
     public void onDestroy() {
@@ -424,6 +439,15 @@ public class SpiralAct extends AppCompatActivity {
         tv.orientationJustChanged(TRUE);
         tv.resetStaticCoordinatesGet();
         Log.d("1"," -- onConfigurationChanged");
+//        if(newConfig.orientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT){
+//            //切换到竖屏
+//            tv.orientationJustChanged(TRUE);
+//            //Log.d("1"," -- onConfigurationChanged  可以在竖屏方向 to do something");
+//        }else{
+//            //切换到横屏
+//            tv.orientationJustChanged(TRUE);
+//            //Log.d("1"," -- onConfigurationChanged  可以在横屏方向 to do something");
+//        }
         if (searchDialog != null) {
             setDialogSize(searchDialog);
         }
@@ -480,13 +504,16 @@ public class SpiralAct extends AppCompatActivity {
 
     public void showSearchDialog() {
 
+        //Toast.makeText(mContext, "allTempleNames length is: " + tv.allTempleNames.size(), Toast.LENGTH_SHORT).show();
+
         final ArrayAdapter<String> allTempleNamesAdapter = new ArrayAdapter<String>(
-                SpiralAct.this,
-                android.R.layout.simple_list_item_1,
+                SpiralAct.this,   // Context上下文
+                android.R.layout.simple_list_item_1,  // 子项布局id
                 tv.allTempleNames
         );
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        //builder.setTitle(getResources().getString(R.string.app_name));
 
         final SearchView searchView = new SearchView(this);
         searchView.setIconifiedByDefault(false);
@@ -498,7 +525,7 @@ public class SpiralAct extends AppCompatActivity {
         listView.setAdapter(allTempleNamesAdapter);
         listView.setTextFilterEnabled(true);
         listView.setPadding(10,10,10,10);
-        listView.setBackgroundColor(Color.parseColor("#ffffee"));
+        listView.setBackgroundColor(Color.parseColor("#ffffff"));
 
 
         LinearLayout.LayoutParams nice = new LinearLayout.LayoutParams
@@ -507,6 +534,7 @@ public class SpiralAct extends AppCompatActivity {
 
         listView.setLayoutParams(nice);
 
+        //listView.setBackgroundColor(RED);
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             // 当点击搜索按钮时触发该方法
@@ -515,7 +543,7 @@ public class SpiralAct extends AppCompatActivity {
                 return false;
             }
 
-
+            // 当搜索内容改变时触发该方法
             @Override
             public boolean onQueryTextChange(String newText) {
                 Filter filter = ((Filterable) allTempleNamesAdapter).getFilter();
@@ -534,8 +562,8 @@ public class SpiralAct extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.O_MR1)
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int position,
-                                    long positionId) {
-
+                                    long positionId) {//arg1为当前的view，用当前的view
+                //Toast.makeText(mContext, "list position and positionId are: " + position + " " + positionId, Toast.LENGTH_SHORT).show();
                 searchView.setQuery(allTempleNamesAdapter.getItem(position), false);
             }
         });
@@ -679,9 +707,13 @@ public class SpiralAct extends AppCompatActivity {
             temporary[i] = allYearsWithoutDuplicates.get(i);
         }
 
-        yearPickerPicker.setDisplayedValues(temporary);
-        yearPickerPicker.setMaxValue(temporary.length - 1);
+        //Toast.makeText(mContext, "temporary length is: " + temporary.length + "", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(mContext, "allYeas size: " + tv.allYears.size() + "", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(mContext, temporary[100] + "", Toast.LENGTH_SHORT).show();
 
+        yearPickerPicker.setDisplayedValues(temporary); //设置文字
+        yearPickerPicker.setMaxValue(temporary.length - 1); //设置最大值
+        //yearPickerPicker.setValue(0);
         yearPickerPicker.setValue(selectedYearIndex);
         selectedYear = "2020"; // we need this here, other wise, selectedYear is null when first time open year yearPickerPicker dialog and not moving the yearPickerPicker when passed in TempleView through method.
         //yearPickerPicker.setTextColor(Color.GRAY);
@@ -737,7 +769,7 @@ public class SpiralAct extends AppCompatActivity {
         });
 
 
-        yearPickerPicker.setBackgroundColor(Color.parseColor("#ffffee"));
+        yearPickerPicker.setBackgroundColor(Color.parseColor("#000000"));
 
         LinearLayout yearPickerView = new LinearLayout(this);
         yearPickerView.setOrientation(LinearLayout.VERTICAL);
@@ -796,6 +828,24 @@ public class SpiralAct extends AppCompatActivity {
         layoutParams.weight = 10;
         btnPositive.setLayoutParams(layoutParams);
         btnNegative.setLayoutParams(layoutParams);
+
+        // these will override the onclick above
+//        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                //do something
+//                Toast.makeText(mContext, "click on yes", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                //do something
+//                Toast.makeText(mContext, "click on no", Toast.LENGTH_SHORT).show();
+//
+//            }
+//        });
+
     }
 
 }

@@ -1,24 +1,39 @@
 package com.example.templemaps;
 
 import android.annotation.SuppressLint;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.List;
 
 public class ListAct extends AppCompatActivity {
     private List<Temple> temples;
-
+    private RecyclerView recyclerView;
+    private TempleAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
+        //Loading all temple information from the JSON file
         temples = Temple.loadTemplesFromJson(this, "temples.json");
+
+        //Actual Listing (Initializing Recycler View)
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        // Create the adapter and set it to the RecyclerView
+        adapter = new TempleAdapter(temples);
+        recyclerView.setAdapter(adapter);
 
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setItemIconTintList(null);
