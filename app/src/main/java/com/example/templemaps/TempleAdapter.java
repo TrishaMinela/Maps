@@ -38,10 +38,17 @@ public class TempleAdapter extends RecyclerView.Adapter<TempleAdapter.TempleView
         holder.templeNameTextView.setText(temple.getName());
         holder.templeDescriptionTextView.setText(temple.getDescription());
 
-        // Set the temple image using setImageResource() with getResources().getIdentifier() and getImageResourceId()
-        String imageName = temple.getImageResourceId();
-        int resId = holder.templeImageView.getContext().getResources().getIdentifier(imageName, "drawable", holder.templeImageView.getContext().getPackageName());
-        holder.templeImageView.setImageResource(resId);
+        String imageResourceId = temple.getImageResourceId();
+        if (imageResourceId.equals("no_image")) {
+            // If no image is specified in the JSON file, use the no_image_large.webp drawable
+            holder.templeImageView.setImageResource(R.drawable.no_image_large);
+        } else {
+            // Set the temple image using setImageResource() with getResources().getIdentifier() and getImageResourceId()
+            int resId = holder.templeImageView.getContext().getResources().getIdentifier(imageResourceId, "drawable", holder.templeImageView.getContext().getPackageName());
+            holder.templeImageView.setImageResource(resId);
+        }
+
+
     }
 
     @Override
