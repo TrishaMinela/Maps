@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"> <!-- Change this to wrap_content -->
 
     <androidx.cardview.widget.CardView
         app:cardElevation="10dp"
@@ -11,7 +11,7 @@
         android:layout_margin="10dp"
         app:cardBackgroundColor="@color/white"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <RelativeLayout
             android:layout_width="match_parent"

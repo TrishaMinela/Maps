@@ -27,7 +27,7 @@ public class ListAct extends AppCompatActivity {
         temples = Temple.loadTemplesFromJson(this, "temples.json");
 
         //Actual Listing (Initializing Recycler View)
-        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        this.recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 

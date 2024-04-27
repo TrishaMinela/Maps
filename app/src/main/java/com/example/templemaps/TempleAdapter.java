@@ -2,8 +2,13 @@ package com.example.templemaps;
 
 //this is for the List activity
 
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.content.Context;
+import android.graphics.Rect;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,8 +28,7 @@ public class TempleAdapter extends RecyclerView.Adapter<TempleAdapter.TempleView
     @NonNull
     @Override
     public TempleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.temples_item_list, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.temple_item_layout, parent, false);
         return new TempleViewHolder(view);
     }
 
@@ -33,7 +37,11 @@ public class TempleAdapter extends RecyclerView.Adapter<TempleAdapter.TempleView
         Temple temple = temples.get(position);
         holder.templeNameTextView.setText(temple.getName());
         holder.templeDescriptionTextView.setText(temple.getDescription());
-        holder.templeImageView.setImageResource(temple.getIconResourceId());
+
+        // Set the temple image using setImageResource() with getResources().getIdentifier() and getImageResourceId()
+        String imageName = temple.getImageResourceId();
+        int resId = holder.templeImageView.getContext().getResources().getIdentifier(imageName, "drawable", holder.templeImageView.getContext().getPackageName());
+        holder.templeImageView.setImageResource(resId);
     }
 
     @Override
