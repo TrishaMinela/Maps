@@ -207,7 +207,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         // Calculate the Y position for the popup window to appear above the bottom navigation bar
         int navigationBarHeight = getResources().getDimensionPixelSize(R.dimen.bottom_navigation_height);
-        int popupYPosition = navigationBarHeight + 40;
+        int popupYPosition = navigationBarHeight;
 
         // Show the popup window centered horizontally and above the bottom navigation bar
         popupWindow.showAtLocation(findViewById(android.R.id.content), Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM, 0, popupYPosition);
