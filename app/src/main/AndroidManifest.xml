@@ -27,7 +27,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".SpiralAct" />
+        <activity android:name=".SpiralActivity" />
         <activity android:name=".ListAct" />
 
 

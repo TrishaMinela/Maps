@@ -45,7 +45,7 @@ public class ListAct extends AppCompatActivity {
                 if (id == R.id.navigation_spiral) {
                     Log.d("Navigation", "Spiral selected");
                     // Start the SpiralActivity
-                    startActivity(new Intent(ListAct.this, SpiralAct.class));
+                    startActivity(new Intent(ListAct.this, SpiralActivity.class));
                     return true;
                 } else if (id == R.id.navigation_map) {
                     Log.d("Navigation", "Map selected");

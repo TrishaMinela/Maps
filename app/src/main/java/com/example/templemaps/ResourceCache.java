@@ -1,6 +1,5 @@
 package com.example.templemaps;
 
-
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -13,12 +12,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class ResourceCache {
 
-    private static final Map<Integer, Bitmap> cache = new HashMap<>();
+//    Integer testIdentifier;
     private ArrayList<String> templeInfo = new ArrayList<>();
     private ArrayList<String> templeDrawableNames = new ArrayList<>();
     public ArrayList<Integer> templeLargeDrawableIds = new ArrayList<>();
@@ -26,44 +23,60 @@ public class ResourceCache {
     public ArrayList<String> allTempleLinks = new ArrayList<>();
     public ArrayList<String> templeNames = new ArrayList<>();
     public  ArrayList<Integer> smallImageIdentifiers = new ArrayList<>();
-    public ArrayList<TempleSpiral> templeObjects = new ArrayList<TempleSpiral>();
+    public  ArrayList<Temple> templeObjects = new ArrayList<>();
     public  ArrayList<Integer>  allTempleInfoFileIds = new ArrayList<>();
 
     public ResourceCache(Context context, float w2) {
 
+//        testIdentifier = context.getResources().getIdentifier("antofagasta_chile_temple", "drawable", "edu.byuh.cis.templevis");
+//        Log.d("identifier 11111", testIdentifier + "");
+//        Log.d("identifier 22222", R.drawable.antofagasta_chile_temple + "");
+
+
         Integer noImageIdentifier = context.getResources().getIdentifier("no_image", "drawable", "edu.byuh.cis.templevis");
 
         readInfoFile(context);
-        for (String s: templeInfo) {
-            templeDrawableNames.add(s.substring(0, s.length()-6));
-            templeYears.add(s.substring(s.length()-5, s.length()-1));
+            for (String s: templeInfo) {
+                if (s.length() >= 6) { // Ensure there's enough length for both operations
+                    templeDrawableNames.add(s.substring(0, s.length()-6));
+                    templeYears.add(s.substring(s.length()-5, s.length()-1));
+                } else {
+                    Log.e("ResourceCache", "Invalid string length for: " + s);
+                    // Handle the error case, maybe add a default value or skip
+                }
+
+
         }
 
         Log.d("temples count", templeInfo.size() + "");
+//        Log.d("temples drawable names", templeDrawableNames.toString());
+//        Log.d("temples years", templeYears.toString());
 
         for (String s: templeDrawableNames) {
-            Integer identifier = context.getResources().getIdentifier(s, "drawable", "edu.byuh.cis.templevis");
+            Integer identifier = context.getResources().getIdentifier(s, "drawable", "com.example.templemaps");
             if (identifier != 0) {
                 smallImageIdentifiers.add(identifier);
             } else {
-                smallImageIdentifiers.add(context.getResources().getIdentifier("no_image", "drawable", "edu.byuh.cis.templevis"));
+                smallImageIdentifiers.add(context.getResources().getIdentifier("no_image", "drawable", "com.example.templemaps"));
             }
 
-            Integer largeIdentifier = context.getResources().getIdentifier(s + "_large", "drawable", "edu.byuh.cis.templevis");
+            Integer largeIdentifier = context.getResources().getIdentifier(s + "_large", "drawable", "com.example.templemaps");
             if (largeIdentifier != 0) {
                 templeLargeDrawableIds.add(largeIdentifier);
             } else {
-                templeLargeDrawableIds.add(context.getResources().getIdentifier("no_image_large", "drawable", "edu.byuh.cis.templevis"));
+                templeLargeDrawableIds.add(context.getResources().getIdentifier("no_image_large", "drawable", "com.example.templemaps"));
             }
+//            Log.d("identifier", identifier + " is " + s);
 
-            Integer infoFileIdentifier = context.getResources().getIdentifier(s, "raw", "edu.byuh.cis.templevis");
+            Integer infoFileIdentifier = context.getResources().getIdentifier(s, "raw", "com.example.templemaps");
             if (infoFileIdentifier != 0) {
                 allTempleInfoFileIds.add(infoFileIdentifier);
             } else {
-                allTempleInfoFileIds.add(context.getResources().getIdentifier("no_info", "raw", "edu.byuh.cis.templevis"));
+                allTempleInfoFileIds.add(context.getResources().getIdentifier("no_info", "raw", "com.example.templemaps"));
             }
 
-            Log.d(s, infoFileIdentifier + " " + (infoFileIdentifier == 0 ?  "------" + context.getResources().getIdentifier("no_info", "raw", "edu.byuh.cis.templevis") : " "));
+            Log.d(s, infoFileIdentifier + " " + (infoFileIdentifier == 0 ?  "------" + context.getResources().getIdentifier("no_info", "raw", "com.example.templemaps") : " "));
+            // rename raw files for those 0's
 
             String[] templeNameList = s.split("_");
             String templeName = "";
@@ -81,13 +94,40 @@ public class ResourceCache {
                 word = word.substring(0, 1) + word.substring(1);
                 templeLink = templeLink + "-" + word;
             }
+            // update some broken links later.
 
+//            templeLink = "https://www.churchofjesuschrist.org/temples/details/" + templeLink.substring(1,templeLink.length()) + "?lang=eng";
+//
+//            if (templeLink.contains("kirtland-temple")) {
+//                templeLink = "https://www.kirtlandtemple.org/";
+//            } else if (templeLink.contains("old-nauvoo-temple")) {
+//                templeLink = "https://www.churchofjesuschrist.org/temples/details/nauvoo-illinois-temple?lang=eng";
+//            } else if (templeLink.contains("st-george-utah-temple")) {
+//                templeLink = "https://www.churchofjesuschrist.org/temples/details/st.-george-utah-temple?lang=eng";
+//            } else if (templeLink.contains("")) {
+//                templeLink = "";
+//            } else if (templeLink.contains("")) {
+//                templeLink = "";
+//            } else if (templeLink.contains("")) {
+//                templeLink = "";
+//            } else if (templeLink.contains("")) {
+//                templeLink = "";
+//            } else if (templeLink.contains("")) {
+//                templeLink = "";
+//            }
+//
             templeLink = "https://www.churchofjesuschrist.org/search?lang=eng&query=" + s;
 
-
+//            Log.d(s, templeLink);
 
             allTempleLinks.add(templeLink);
         }
+
+//        Log.d("small identifiers", smallImageIdentifiers.toString());
+//        Log.d("temple names", templeNames.toString());
+//        Log.d("large identifiers", templeLargeDrawableIds.toString());
+//          Log.d("temple links", allTempleLinks.toString());
+//        Log.d("temple info file ids", allTempleInfoFileIds.toString());
 
         float w = w2 / 4;
 
@@ -95,15 +135,15 @@ public class ResourceCache {
             Bitmap temple = loadAndScale(context.getResources(),i, w);
 
             if(i == noImageIdentifier) {
-                templeObjects.add(new TempleSpiral(temple, 0f, 0f, 0f, false));
+                templeObjects.add(new Temple(temple, 0f, 0f, 0f, false));
             } else {
-                templeObjects.add(new TempleSpiral(temple, 0f, 0f, 0f, true));
+                templeObjects.add(new Temple(temple, 0f, 0f, 0f, true));
             }
         }
         Log.d("templeObjects size", templeObjects.size() + "");
 
-        for(TempleSpiral temple: templeObjects) {
-            TempleSpiral.setLink(allTempleLinks.get(templeObjects.indexOf(temple)));
+        for(Temple temple: templeObjects) {
+            temple.setLink(allTempleLinks.get(templeObjects.indexOf(temple)));
         }
 
 
@@ -135,30 +175,11 @@ public class ResourceCache {
 
     }
 
-
-    public static Bitmap getBitmap(Resources res, int id, float newWidth) {
-        Bitmap cachedBitmap = cache.get(id);
-        if (cachedBitmap != null) {
-            return cachedBitmap;
-        } else {
-            Bitmap scaledBitmap = loadAndScale(res, id, newWidth);
-            if (scaledBitmap != null) {
-                cache.put(id, scaledBitmap);
-            }
-            return scaledBitmap;
-        }
-    }
-
     private static Bitmap loadAndScale(Resources res, int id, float newWidth) {
         Bitmap original = BitmapFactory.decodeResource(res, id);
-        if (original == null) {
-            // Handle case where decoding fails
-            Log.e("ResourceCache", "Failed to decode bitmap for resource ID: " + id);
-            return null;
-        } else {
-            float aspectRatio = (float) original.getHeight() / (float) original.getWidth();
-            float newHeight = newWidth * aspectRatio;
-            return Bitmap.createScaledBitmap(original, (int) newWidth, (int) newHeight, true);
-        }
+        float aspectRatio = (float)original.getHeight()/(float)original.getWidth();
+        float newHeight = newWidth * aspectRatio;
+        return Bitmap.createScaledBitmap(original, (int)newWidth, (int)newHeight, true);
     }
+
 }

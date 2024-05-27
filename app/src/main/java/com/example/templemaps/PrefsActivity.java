@@ -1,6 +1,5 @@
 package com.example.templemaps;
 
-
 import android.content.Context;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;

@@ -9,7 +9,9 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.view.View;
+
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
+
 import java.util.ArrayList;
 
 
@@ -32,11 +34,11 @@ public class SingleTempleImage extends View {
     private Bitmap bLast;
     private Bitmap bNext;
 
-    private TempleSpiral currentTemple;
-    private TempleSpiral lastTemple;
-    private TempleSpiral nextTemple;
+    private Temple currentTemple;
+    private Temple lastTemple;
+    private Temple nextTemple;
 
-    private ArrayList<TempleSpiral> threeTemples;
+    private ArrayList<Temple> threeTemples;
 
     private Paint textPaint;
     private float canvasWidth;
@@ -89,9 +91,9 @@ public class SingleTempleImage extends View {
             b = loadAndScale(getResources(), id, imageSize); //id shows the current temple selected. idLast is the id of the temple inward on the spiral, and idNext is outward
             bLast = loadAndScale(getResources(), idLast, imageSize);
             bNext = loadAndScale(getResources(), idNext, imageSize);
-            currentTemple = new TempleSpiral(b, 0f, 0f, 0f); //where temple objects are created
-            lastTemple = new TempleSpiral(bLast, 0f, 0f, 0f);
-            nextTemple = new TempleSpiral(bNext, 0f, 0f, 0f);
+            currentTemple = new Temple(b, 0f, 0f, 0f); //where temple objects are created
+            lastTemple = new Temple(bLast, 0f, 0f, 0f);
+            nextTemple = new Temple(bNext, 0f, 0f, 0f);
             threeTemples.add(currentTemple);
             threeTemples.add(lastTemple);
             threeTemples.add(nextTemple);
@@ -108,7 +110,7 @@ public class SingleTempleImage extends View {
 //        c.drawText(imageSize + ":imageSize", 100, 180, textPaint);
 //
 
-        for (TempleSpiral t: threeTemples) {
+        for (Temple t: threeTemples) {
             if (t.role.equals("current")) {
                 c.drawBitmap(t.image, x, y, null);
             } else if (t.role.equals("last")) {
@@ -130,7 +132,7 @@ public class SingleTempleImage extends View {
         bNext.recycle();
 
         x = canvasCenterX - imageSize / 2;
-        for (TempleSpiral t: threeTemples) {
+        for (Temple t: threeTemples) {
             if (t.role.equals("current")) {
                 t.setRole("last");
             } else if (t.role.equals("last")) {
@@ -146,7 +148,7 @@ public class SingleTempleImage extends View {
         bLast = loadAndScale(getResources(), idLast, imageSize);
         bNext = loadAndScale(getResources(), idNext, imageSize);
 
-        for (TempleSpiral t: threeTemples) {
+        for (Temple t: threeTemples) {
             if (t.role.equals("current")) {
                 t.changeImage(b);
             } else if (t.role.equals("last")) {
@@ -189,4 +191,18 @@ public class SingleTempleImage extends View {
         valueAnimator.start();
 
     }
+
+    // maybe useful later
+//    @Override
+//    public boolean onTouchEvent(MotionEvent m) {
+//        float touchX= m.getX();;
+//        float touchY= m.getY();;
+//        if (m.getAction() == MotionEvent.ACTION_DOWN) {
+//        }
+//        if (m.getAction() == MotionEvent.ACTION_MOVE) {
+//        }
+//        if (m.getAction() == MotionEvent.ACTION_UP) {
+//        }
+//        return true;
+//    }
 }

@@ -4,9 +4,9 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import android.content.Context;
+import android.graphics.Bitmap;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,6 +20,15 @@ public class Temple {
     private String description;
     private int iconResourceId;
     private LatLng location;
+
+    //added for Spiral Activity
+    Bitmap image;
+    Float size;
+    Float x;
+    Float y;
+    String role;
+    String link;
+    Boolean hasImage;
 
     public Temple() {
         // Default constructor
@@ -115,5 +124,38 @@ public class Temple {
 
     public String getImageResourceId() {
         return imageResourceId;
+    }
+
+
+    //added for Spiral
+
+    public Temple(Bitmap imageP, Float sizeP, Float xP, Float yP, Boolean hi) {
+        image = imageP;
+        size = sizeP;
+        x = xP;
+        y = yP;
+        role = "";
+        link = "";
+        hasImage = hi;
+    }
+
+    public Temple(Bitmap imageP, Float sizeP, Float xP, Float yP) {
+        image = imageP;
+        size = sizeP;
+        x = xP;
+        y = yP;
+        role = "";
+        link = "";
+    }
+    public void setRole(String r) {
+        role = r;
+    }
+
+    public void setLink(String l) {
+        link = l;
+    }
+
+    public void changeImage(Bitmap b) {
+        image = b;
     }
 }

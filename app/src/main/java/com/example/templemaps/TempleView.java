@@ -1,5 +1,8 @@
 package com.example.templemaps;
 
+import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
+
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -25,7 +28,9 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.RequiresApi;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,15 +39,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Locale;
 
-import static java.lang.Boolean.FALSE;
-import static java.lang.Boolean.TRUE;
-
 
 public class TempleView extends View {
 
     public int howManyTemples;
     private int sliderMax;
-    private Paint bluePaint, redPaint, spiralPaint, yearDisplayPaint;
+    private Paint blackPaint, greyPaint, spiralPaint, yearDisplayPaint;
     private float screenWidth, screenHeight;
     public float theta;
     private Path spiralLine;
@@ -51,13 +53,13 @@ public class TempleView extends View {
     private float centerY;
     private float initialR;
     private boolean sliderMoving;
-    public ArrayList<TempleSpiral> templeObjects; // more OO be more object oriented
+    public ArrayList<Temple> templeObjects; // more OO be more object oriented
     private ArrayList<ArrayList<Float>> onScreenTemples;
     private ArrayList<Float> oneOnScreenTemple;
     private ArrayList<ArrayList<Float>> spiralCoordinates;
     private ArrayList<Float> sizes;
     private ArrayList<String> allTempleLinks;
-    //    private ArrayList<String> allTempleInfo;
+//    private ArrayList<String> allTempleInfo;
     public ArrayList<String> allYears;
     public ArrayList<String> allTempleNames;
     private int eachIndex;
@@ -94,16 +96,18 @@ public class TempleView extends View {
     public TempleView(Context context) {
         super(context);
         howManyTemples = countTemples(context);
-        bluePaint = new Paint();
-        bluePaint.setColor(Color.parseColor("#17252a"));
-        bluePaint.setStyle(Paint.Style.FILL);
-        bluePaint.setTextSize(35);
-        redPaint = new Paint();
-        redPaint.setColor(Color.RED);
-        redPaint.setStyle(Paint.Style.FILL);
-        redPaint.setTextSize(60);
+        blackPaint = new Paint();
+        blackPaint.setColor(Color.BLACK);
+        blackPaint.setStyle(Paint.Style.FILL);
+        blackPaint.setTextSize(35);
+
+        greyPaint = new Paint();
+        greyPaint.setColor(Color.parseColor("#808080")); // Using a shade of grey
+        greyPaint.setStyle(Paint.Style.FILL);
+        greyPaint.setTextSize(60);
+
         spiralPaint = new Paint();
-        spiralPaint.setColor(Color.RED);
+        spiralPaint.setColor(Color.parseColor("#808080"));
         spiralPaint.setStyle(Paint.Style.STROKE);
         spiralPaint.setStrokeWidth(5);
         spiralLine = new Path();
@@ -590,14 +594,14 @@ public class TempleView extends View {
 
         lnl.addView(singleTempleDialogTitleView);
 
-        lnlH.setBackgroundColor(Color.parseColor("#ffffee"));
-        sv.setBackgroundColor(Color.parseColor("#ffffee"));
+        lnlH.setBackgroundColor(Color.parseColor("#ffffff"));
+        sv.setBackgroundColor(Color.parseColor("#ffffff"));
 
         lnl.addView(lnlH);
         //lnlH.setBackgroundColor(Color.GREEN);
         //lnl.addView(sv);
 
-        singleTempleTextView.setBackgroundColor(Color.parseColor("#ffffee"));
+        singleTempleTextView.setBackgroundColor(Color.parseColor("#ffffff"));
         ((ViewGroup)singleTempleTextView.getParent()).removeView(singleTempleTextView);
         lnl.addView(singleTempleTextView);
         //singleTempleTextView.setBackgroundColor(Color.RED);
@@ -651,7 +655,7 @@ public class TempleView extends View {
         btnPositive.setLayoutParams(layoutParams);
         btnNegative.setLayoutParams(layoutParams);
 
-        singleTempleDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+        singleTempleDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 //singleTempleDialog.dismiss();
@@ -720,30 +724,23 @@ public class TempleView extends View {
     @Override
     public void onDraw(Canvas c) {
 
-//        if(templeObjects != null) {
-//            Log.d("temples number", templeObjects.size() + "");
-//        }
-
-        //Toast.makeText(getContext(), "onscreen temples" + onScreenTemples.size(), Toast.LENGTH_SHORT).show();
-        //Log.d("onscreen temples ", "" + onScreenTemples.size());
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             screenWidth = c.getWidth() / 2;
-            screenHeight = c.getHeight();
+            screenHeight = (float) (c.getHeight() );
             centerX = screenWidth / 2 + 3 * screenWidth / 16;
-            centerY = screenHeight / 2;
+            centerY = (float) (screenHeight / 2);
             ultimateScreenWidth = Math.min(windowHeight, windowWidth);
-            yearDisplayPaint.setTextSize((int)(2 * screenHeight / 25));
+            yearDisplayPaint.setTextSize((int)(2 * screenHeight / 20));
         } else if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             screenWidth = c.getWidth();
-            screenHeight = c.getHeight();
+            screenHeight = (float) (c.getHeight() );
             centerX = screenWidth * 0.57f;
-            centerY = screenHeight / 2;
+            centerY = (float) (screenHeight / 2);
             ultimateScreenWidth = screenWidth;
-            yearDisplayPaint.setTextSize((int)(screenHeight / 25));
+            yearDisplayPaint.setTextSize((int)(screenHeight / 35));
             //Log.d("PORTRAIT ", "|||||||||||||||||||||||||||||" + screenWidth);
         }
-        //Log.d("CENTER X ", centerX + " ");
-        //Log.d("CENTER Y ", centerY + " ");
+
         initialR = screenWidth / 10;
         initialRForLocation = ultimateScreenWidth / 10;
 
@@ -766,8 +763,8 @@ public class TempleView extends View {
             orientationJustChanged = FALSE;
             //Log.d("coordinates and sizes ", " just reset ");
             //Log.d("orChanged coorSize ", " ++++++++++++++++ "
-            //+ spiralCoordinates.size() + " "
-            //+ sizes.size());
+                    //+ spiralCoordinates.size() + " "
+                    //+ sizes.size());
             //Log.d("spiralCoordinates", spiralCoordinates + " ");
             //Log.d("sizes", sizes + " ");
         }
@@ -778,8 +775,8 @@ public class TempleView extends View {
             getSizes();
             coordinatesAndSizesUpdated = TRUE;
             //Log.d("launch coorSize ", " ++++++++++++++++ "
-            //+ spiralCoordinates.size() + " "
-            //+ sizes.size());
+                    //+ spiralCoordinates.size() + " "
+                    //+ sizes.size());
             //Log.d("spiralCoordinates", spiralCoordinates + " ");
             //Log.d("sizes", sizes + " ");
             //Log.d("screenWidth", screenWidth + " ");
@@ -822,7 +819,7 @@ public class TempleView extends View {
 
         //Temple View Background color
         //c.drawColor(Color.parseColor("#24292b"));
-        c.drawColor(Color.parseColor("#17252a"));
+        c.drawColor(Color.parseColor("#FFFFFF"));
 
         //we just want to load the images once, we don't have to load it every time when we re-draw. otherwise the program is gonna be so slow
         if (loadedImages == false) {
@@ -879,7 +876,7 @@ public class TempleView extends View {
 //                t.setLink(allTempleLinks.get(templeObjects.indexOf(t)));
 //            }
 
-            yearDisplayPaint.setColor(Color.parseColor("#def2f1"));
+            yearDisplayPaint.setColor(Color.parseColor("#000000"));
             yearDisplayPaint.setStyle(Paint.Style.FILL);
             yearDisplayPaint.setTextAlign(Paint.Align.CENTER);
         }
@@ -903,12 +900,12 @@ public class TempleView extends View {
 
     }
 
-    public void drawTempleLabels(float ts, TempleSpiral t, Canvas c) { // more OO
+    public void drawTempleLabels(float ts, Temple t, Canvas c) { // more OO
 
         float newCurrentTempleRadius = t.size * screenWidth / 2;
 
         Paint thisTempleLabelPaint = new Paint();
-        thisTempleLabelPaint.setColor(Color.parseColor("#def2f1"));
+        thisTempleLabelPaint.setColor(Color.parseColor("#000000"));
         thisTempleLabelPaint.setStyle(Paint.Style.FILL);
         thisTempleLabelPaint.setTextSize((int)(newCurrentTempleRadius / 5));
         thisTempleLabelPaint.setTextAlign(Paint.Align.CENTER);
@@ -1001,7 +998,7 @@ public class TempleView extends View {
         selectedYear = s;
     }
 
-    public void actuallyDrawing(TempleSpiral t, Canvas c, int thisTempleIndex) { // more OO
+    public void actuallyDrawing(Temple t, Canvas c, int thisTempleIndex) { // more OO
 
 
         float newCurrentTempleRadius = t.size * screenWidth / 2;
@@ -1011,7 +1008,7 @@ public class TempleView extends View {
         currentTempleMatrix.postTranslate(t.x - t.image.getWidth()  * t.size * 2, t.y - t.image.getHeight() * t.size * 2); // more OO
 
         Paint selectedYearTempleFramePaint = new Paint();
-        selectedYearTempleFramePaint.setColor(Color.parseColor("#287a78"));
+        selectedYearTempleFramePaint.setColor(Color.parseColor("#000000"));
         selectedYearTempleFramePaint.setStyle(Paint.Style.FILL);
         if (selectedYear.equals("Temples under construction") || selectedYear.equals("建设中的圣殿")) {
             selectedYear = "0000";
@@ -1045,7 +1042,7 @@ public class TempleView extends View {
         //Log.d("spiralcoors: ", " in placeallcircles " + spiralCoordinates + " ");
 
         onScreenTemples.clear();
-        for (TempleSpiral t : templeObjects) { //more OO: for (Bitmap t : temples) {
+        for (Temple t : templeObjects) { //more OO: for (Bitmap t : temples) {
             int thisTempleIndex = templeObjects.indexOf(t); // more OO: int thisTempleIndex = temples.indexOf(t);
             float ts = theta - 30 * templeObjects.indexOf(t); // more OO: float ts = theta - 30 * temples.indexOf(t);
             if (ts > 0 && ts < spiralCoordinates.size() - 1) {
@@ -1138,7 +1135,7 @@ public class TempleView extends View {
     }
 
     public void yearDisplayLandscape(Canvas c) {
-        c.drawRect( 5 * screenWidth / 4, 0, 2 * screenWidth, screenHeight, bluePaint);
+        c.drawRect( 5 * screenWidth / 4, 0, 2 * screenWidth, screenHeight, blackPaint);
         float firstOnScreenTempleIndex = 0;
         float lastOnScreenTempleIndex = 0;
 
@@ -1180,7 +1177,7 @@ public class TempleView extends View {
 
 
 
-        //String curLan = getResources().getConfiguration().locale.getLanguage();
+            //String curLan = getResources().getConfiguration().locale.getLanguage();
 //            if (curLan.equals("zh")) {
 //                // do nothing //中文
 //                startYear = startYear.substring(0,4);
@@ -1192,17 +1189,17 @@ public class TempleView extends View {
 //            }
 
         if (theta <= 40){
-            c.drawText(getResources().getString(R.string.first_temple), 6.5f * screenWidth / 4, 18 * screenHeight / 40, yearDisplayPaint);
-            c.drawText("1836", 6.5f * screenWidth / 4, 22 * screenHeight / 40, yearDisplayPaint);
+            c.drawText(getResources().getString(R.string.first_temple), 6.5f * screenWidth / 4, 18 * screenHeight / 10, yearDisplayPaint);
+            c.drawText("1836", 6.5f * screenWidth / 4, 22 * screenHeight / 10, yearDisplayPaint);
         } else if (theta > 5550 ) {
-            c.drawText(getResources().getString(R.string.future_temples), 6.5f * screenWidth / 4, 20 * screenHeight / 40, yearDisplayPaint);
+            c.drawText(getResources().getString(R.string.future_temples), 6.5f * screenWidth / 4, 20 * screenHeight / 10, yearDisplayPaint);
         } else if (endYear.contains("0000") || endYear.contains("1111")){
-            c.drawText(getResources().getString(R.string.years_of_temples) + " " , 6.5f * screenWidth / 4, 15 * screenHeight / 40, yearDisplayPaint);
-            c.drawText(startYear + " --- " + 2020, 6.5f * screenWidth / 4, 25 * screenHeight / 40, yearDisplayPaint);
+            c.drawText(getResources().getString(R.string.years_of_temples) + " " , 6.5f * screenWidth / 4, 15 * screenHeight / 10, yearDisplayPaint);
+            c.drawText(startYear + " --- " + 2020, 6.5f * screenWidth / 4, 25 * screenHeight / 10, yearDisplayPaint);
         } else {
-            c.drawText(getResources().getString(R.string.years_of_temples) + " " , 6.5f * screenWidth / 4, 15 * screenHeight / 40, yearDisplayPaint);
-            c.drawText(startYear + " --- " + endYear, 6.5f * screenWidth / 4, 25 * screenHeight / 40, yearDisplayPaint);
-        }
+            c.drawText(getResources().getString(R.string.years_of_temples) + " " , 6.5f * screenWidth / 4, 15 * screenHeight / 10, yearDisplayPaint);
+            c.drawText(startYear + " --- " + endYear, 6.5f * screenWidth / 4, 25 * screenHeight / 10, yearDisplayPaint);
+       }
     }
 
     public void getCoordinates() {

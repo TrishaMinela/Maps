@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 if (id == R.id.navigation_spiral) {
                     Log.d("Navigation", "Spiral selected");
                     // Start the SpiralActivity
-                    startActivity(new Intent(MainActivity.this, SpiralAct.class));
+                    startActivity(new Intent(MainActivity.this, SpiralActivity.class));
                     return true;
                 } else if (id == R.id.navigation_map) {
                     Log.d("Navigation", "Map selected");
