@@ -266,15 +266,15 @@ public class SpiralActivity extends AppCompatActivity {
 
         //Set up Left Button
         final ImageButton leftButton = findViewById(R.id.slider_left_button);
-        leftButton.setBackgroundColor(Color.parseColor("#000000"));
+        leftButton.setBackgroundColor(Color.parseColor("#ffffff"));
 
         leftButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    leftButton.setBackgroundColor(Color.parseColor("#000000"));
+                    leftButton.setBackgroundColor(Color.parseColor("#ffffff"));
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    leftButton.setBackgroundColor(Color.parseColor("#000000"));
+                    leftButton.setBackgroundColor(Color.parseColor("#ffffff"));
                     if (slider.getProgress() - 30 < 30) {
                         progress = 30;
                     } else {
@@ -291,15 +291,15 @@ public class SpiralActivity extends AppCompatActivity {
 
         //Setup Right Button
         final ImageButton rightButton = findViewById(R.id.slider_right_button);
-        rightButton.setBackgroundColor(Color.parseColor("#000000"));
+        rightButton.setBackgroundColor(Color.parseColor("#ffffff"));
 
         rightButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    rightButton.setBackgroundColor(Color.parseColor("#000000"));
+                    rightButton.setBackgroundColor(Color.parseColor("#ffffff"));
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    rightButton.setBackgroundColor(Color.parseColor("#000000"));
+                    rightButton.setBackgroundColor(Color.parseColor("#ffffff"));
                     if (slider.getProgress() + 30 > sliderMax) {
                         progress = sliderMax;
                     } else {
