@@ -37,6 +37,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 
 
@@ -53,7 +54,6 @@ public class TempleView extends View {
     private float centerY;
     private float initialR;
     private boolean sliderMoving;
-    public ArrayList<Temple> templeObjects; // more OO be more object oriented
     private ArrayList<ArrayList<Float>> onScreenTemples;
     private ArrayList<Float> oneOnScreenTemple;
     private ArrayList<ArrayList<Float>> spiralCoordinates;
@@ -91,10 +91,22 @@ public class TempleView extends View {
     private AlertDialog singleTempleDialog;
     private int selectedTempleIndex = -1;
     public String spiral_effect;
+    private List<Temple> templeObjects;
 
 
     public TempleView(Context context) {
         super(context);
+        templeObjects = Temple.loadTemplesFromJson(context, "temples.json"); // Load temple objects from JSON
+        howManyTemples = templeObjects.size(); // Adjust howManyTemples based on loaded data
+        // Other initializations
+
+        for (Temple temple : templeObjects) {
+            allTempleLinks.add(temple.getLink() != null ? temple.getLink() : ""); // Ensure there is a default value if no link exists
+            allYears.add(extractYear(temple.getDescription()));
+            allTempleNames.add(temple.getName());
+        }
+
+
         howManyTemples = countTemples(context);
         blackPaint = new Paint();
         blackPaint.setColor(Color.BLACK);
@@ -130,6 +142,21 @@ public class TempleView extends View {
         sliderMax = howManyTemples * 30;
 
     }
+
+    private String extractYear(String description) {
+        String[] lines = description.split("\n");
+        for (String line : lines) {
+            if (line.startsWith("Dedication:")) {
+                return line.substring("Dedication:".length()).trim().split(" ")[0];
+            } else if (line.startsWith("Groundbreaking:")) {
+                return line.substring("Groundbreaking:".length()).trim().split(" ")[0];
+            } else if (line.startsWith("Announcement:")) {
+                return line.substring("Announcement:".length()).trim().split(" ")[0];
+            }
+        }
+        return "Unknown";
+    }
+
 
     public void setDegree(int sliderP) {
         theta = sliderP;
@@ -478,8 +505,7 @@ public class TempleView extends View {
         //singleTempleImageView.setBackgroundColor(Color.RED);
 
         // milestone dates
-        oneTempleInfo = "";
-        readOneInfoFile(allTempleInfoFileIds.get(eachIndex));
+        oneTempleInfo = templeObjects.get(eachIndex).getDescription();
 
         final TextView singleTempleTextView = new TextView(getContext());
         singleTempleTextView.setText(oneTempleInfo);
@@ -497,7 +523,7 @@ public class TempleView extends View {
 
         final TextView singleTempleDialogTitleView = new TextView(getContext());
 //        singleTempleDialogTitleView.setText(allTempleInfo.get(realEachIndex*3));
-        singleTempleDialogTitleView.setText(allTempleNames.get(realEachIndex));
+        singleTempleDialogTitleView.setText(templeObjects.get(realEachIndex).getName());
         singleTempleDialogTitleView.setTextSize(20);
         singleTempleDialogTitleView.setPadding(0,20,0,0);
         singleTempleDialogTitleView.setTextColor(Color.BLACK);
@@ -1034,45 +1060,31 @@ public class TempleView extends View {
         c.drawBitmap(t.image, currentTempleMatrix, null); // more OO
     }
 
-    public void placeAllCircles(Canvas c) {
-        //place all circles, and get the index of on screen temples
-        //this method also call actualDrawing method to draw
+public void placeAllCircles(Canvas c) {
+    onScreenTemples.clear();
+    for (Temple t : templeObjects) {
+        int thisTempleIndex = templeObjects.indexOf(t);
+        float ts = theta - 30 * thisTempleIndex;
+        if (ts > 0 && ts < spiralCoordinates.size() - 1) {
+            t.size = sizes.get((int) ts);
+            t.x = spiralCoordinates.get((int) ts).get(0);
+            t.y = spiralCoordinates.get((int) ts).get(1);
 
-        //Log.d("spiralcoors: ", " in placeallcircles " + spiralCoordinates + " ");
-        //Log.d("spiralcoors: ", " in placeallcircles " + spiralCoordinates + " ");
+            actuallyDrawing(t, c, thisTempleIndex);
+            drawTempleLabels(ts, t, c);
 
-        onScreenTemples.clear();
-        for (Temple t : templeObjects) { //more OO: for (Bitmap t : temples) {
-            int thisTempleIndex = templeObjects.indexOf(t); // more OO: int thisTempleIndex = temples.indexOf(t);
-            float ts = theta - 30 * templeObjects.indexOf(t); // more OO: float ts = theta - 30 * temples.indexOf(t);
-            if (ts > 0 && ts < spiralCoordinates.size() - 1) {
-
-                // set this temple's size, x and y once we know it should be on screen
-                t.size = sizes.get((int) (ts));
-                t.x = spiralCoordinates.get((int) (ts)).get(0);
-                t.y = spiralCoordinates.get((int) (ts)).get(1);
-
-                actuallyDrawing(t, c, thisTempleIndex);
-                drawTempleLabels(ts, t, c);
-
-                //add all on screen temples index to a array list once the slider stopped moving,
-                float currentTempleRadius = t.size * screenWidth / 2;
-                //inner array list: (this onScreenTemple index, x coordinate, y coordinate, temple radius at this position)
-                oneOnScreenTemple.add((float)thisTempleIndex);
-                oneOnScreenTemple.add(t.x);
-                oneOnScreenTemple.add(t.y);
-                oneOnScreenTemple.add(currentTempleRadius);
-                //be aware of adding one array list to another array list of array list then clear old one, remember you must copy.
-                ArrayList<Float> oneOnScreenTempleCopy = new ArrayList<>();
-                oneOnScreenTempleCopy.addAll(oneOnScreenTemple);
-                onScreenTemples.add(oneOnScreenTempleCopy);
-                oneOnScreenTemple.clear();
-            }
+            float currentTempleRadius = t.size * screenWidth / 2;
+            oneOnScreenTemple.add((float) thisTempleIndex);
+            oneOnScreenTemple.add(t.x);
+            oneOnScreenTemple.add(t.y);
+            oneOnScreenTemple.add(currentTempleRadius);
+            ArrayList<Float> oneOnScreenTempleCopy = new ArrayList<>(oneOnScreenTemple);
+            onScreenTemples.add(oneOnScreenTempleCopy);
+            oneOnScreenTemple.clear();
         }
-        // we need this line of code, so that in 3 d view, only the front temple opens when user clicks
-        Collections.reverse(onScreenTemples);
-        //Log.d("onscreen temples ", "" + onScreenTemples.size());
     }
+    Collections.reverse(onScreenTemples);
+}
 
     public void yearDisplay(Canvas c) {
 

@@ -20,6 +20,9 @@ public class Temple {
     private String description;
     private int iconResourceId;
     private LatLng location;
+    private String imageResourceId;
+
+
 
     //added for Spiral Activity
     Bitmap image;
@@ -34,7 +37,6 @@ public class Temple {
         // Default constructor
     }
 
-    private String imageResourceId;
 
     public Temple(double latitude, double longitude, String name, String description, int iconResourceId) {
         this.latitude = latitude;
@@ -44,11 +46,7 @@ public class Temple {
         this.iconResourceId = iconResourceId;
     }
 
-    public void setLocation(LatLng location) {
-        this.location = location;
-    }
-
-
+    //Getters
     public double getLatitude() {
         return latitude;
     }
@@ -65,28 +63,18 @@ public class Temple {
         return name;
     }
 
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getDescription() {
         return description;
     }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-
 
     public int getIconResourceId() {
         return iconResourceId;
     }
 
-    public void setIconResourceId(int iconResourceId) {
-        this.iconResourceId = iconResourceId;
+    public String getImageResourceId() {
+        return imageResourceId;
     }
+
 
     public MarkerOptions toMarkerOptions() {
         MarkerOptions options = new MarkerOptions();
@@ -122,10 +110,6 @@ public class Temple {
         }
     }
 
-    public String getImageResourceId() {
-        return imageResourceId;
-    }
-
 
     //added for Spiral
 
@@ -158,4 +142,14 @@ public class Temple {
     public void changeImage(Bitmap b) {
         image = b;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getLink() {
+        return "https://www.churchofjesuschrist.org/search?lang=eng&query=" + imageResourceId;
+    }
+
+
 }
